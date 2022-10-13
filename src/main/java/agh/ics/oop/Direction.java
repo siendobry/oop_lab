@@ -1,22 +1,18 @@
 package agh.ics.oop;
 
-public class Direction {
+public enum Direction {
+    f("Zwierzak idzie do przodu"),
+    b("Zwierzak idzie do tylu"),
+    r("Zwierzak skreca w prawo"),
+    l("Zwierzak skreca w lewo");
 
-    public enum Directions {
-        f("Zwierzak idzie do przodu"),
-        b("Zwierzak idzie do tylu"),
-        r("Zwierzak skreca w prawo"),
-        l("Zwierzak skreca w lewo");
+    private String information;
 
-        private String information;
-
-        Directions(String information) {
-            this.information = information;
-        }
-
-        public void information() {
-            System.out.println(information);
-        }
+    Direction(String information) {
+        this.information = information;
     }
 
+    public void information() {
+        System.out.println(information);
+    }
 }
