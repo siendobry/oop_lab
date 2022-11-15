@@ -1,15 +1,11 @@
 package agh.ics.oop;
 
+import java.util.Arrays;
+
 public class OptionsParser {
 
     public static MoveDirection[] parse(String[] instructions) {
-        int length = 0;
-        for (String instruction: instructions) {
-            switch (instruction) {
-                case "f", "forward", "b", "backward", "l", "left", "r", "right" -> length += 1;
-            }
-        }
-        MoveDirection[] directions = new MoveDirection[length];
+        MoveDirection[] directions = new MoveDirection[instructions.length];
         int i = 0;
         for (String instruction: instructions) {
             switch (instruction) {
@@ -21,6 +17,7 @@ public class OptionsParser {
             }
             i += 1;
         }
+        directions = Arrays.copyOf(directions, i);
         return directions;
     }
 

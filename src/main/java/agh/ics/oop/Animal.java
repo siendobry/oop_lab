@@ -2,12 +2,35 @@ package agh.ics.oop;
 
 public class Animal {
 
-    private MapDirection orientation = MapDirection.NORTH;
-    private Vector2d position = new Vector2d(2, 2);
+    private MapDirection orientation;
+    private Vector2d position;
+    private IWorldMap map;
+
+    public Animal() {
+        this(new RectangularMap(4, 4), new Vector2d(2, 2));
+    }
+
+    public Animal(IWorldMap map) {
+        this(map, new Vector2d(2, 2));
+    }
+
+    public Animal(IWorldMap map, Vector2d initialPosition) {
+        this.orientation = MapDirection.NORTH;
+        this.position = initialPosition;
+        this.map = map;
+    }
+
+    public MapDirection getOrientation() {
+        return this.orientation;
+    }
+
+    public Vector2d getPosition() {
+        return this.position;
+    }
 
     @Override
     public String toString() {
-        return "Position: " + this.position + ", orientation: " + this.orientation;
+        return this.orientation.toString();
     }
 
     public boolean isAt(Vector2d position) {
@@ -16,25 +39,20 @@ public class Animal {
 
     public void move(MoveDirection direction) {
         switch (direction) {
-            case FORWARD -> {
-                if (!(  this.position.x == 4 && this.orientation == MapDirection.EAST ||
-                        this.position.x == 0 && this.orientation == MapDirection.WEST ||
-                        this.position.y == 4 && this.orientation == MapDirection.NORTH ||
-                        this.position.y == 0 && this.orientation == MapDirection.SOUTH)) {
-                    this.position = this.position.add(this.orientation.toUnitVector());
-                }
+            case FORWARD -> {if (this.map.canMoveTo(this.position.add(this.orientation.toUnitVector())))
+                                this.position = (this.map)
+                                                .moveAnimal(this, this.orientation.toUnitVector());
             }
-            case BACKWARD -> {
-                if (!(  this.position.x==4 && this.orientation==MapDirection.WEST ||
-                        this.position.x==0 && this.orientation==MapDirection.EAST ||
-                        this.position.y==4 && this.orientation==MapDirection.SOUTH ||
-                        this.position.y==0 && this.orientation==MapDirection.NORTH)) {
-                    this.position = this.position.add(this.orientation.toUnitVector().opposite());
-                }
+            case BACKWARD -> {if (this.map.canMoveTo(this.position.add(this.orientation.toUnitVector().opposite())))
+                                this.position = (this.map)
+                                                .moveAnimal(this, this.orientation.toUnitVector().opposite());
             }
             case RIGHT -> this.orientation = this.orientation.next();
             case LEFT -> this.orientation = this.orientation.previous();
         }
+
+//        this.position = position.upperRight(new Vector2d(0, 0))
+//                .lowerLeft(new Vector2d(4, 4));
     }
 
 }
