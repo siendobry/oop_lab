@@ -1,8 +1,6 @@
 package agh.ics.oop;
 
-import java.util.Arrays;
 import java.util.stream.Stream;
-import java.util.Scanner;
 
 public class World {
 
@@ -46,6 +44,16 @@ public class World {
     }
 
     public static void main(String[] args) {
+        MoveDirection[] directions = OptionsParser.parse(args);
+        IWorldMap map = new GrassField(10);
+        Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
+        IEngine engine = new SimulationEngine(directions, map, positions);
+        engine.run();
+    }
+
+}
+
+
 //        System.out.println("Start");
 //        Direction[] directions = strToEnumStream(args);
 //        runStream(directions);
@@ -74,20 +82,8 @@ public class World {
 //            instructions = sc.nextLine().split(" ");
 //        }
 
-        // Forbidding two Animal objects being at the same place,
-        // can be done by creating a Map class, which contains
-        // boolean information (for each position in the map
-        // boundaries), whether there is an Animal object at
-        // a particular position.
-
-        MoveDirection[] directions = new OptionsParser().parse(args);
-        IWorldMap map = new RectangularMap(10, 5);
-        Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
-        IEngine engine = new SimulationEngine(directions, map, positions);
-        engine.run();
-
-        // idk if everything before lines 83 through 87 can be simply deleted from main??
-        // thanks from mountain for your response:)
-    }
-
-}
+// Forbidding two Animal objects being at the same place,
+// can be done by creating a Map class, which contains
+// boolean information (for each position in the map
+// boundaries), whether there is an Animal object at
+// a particular position.

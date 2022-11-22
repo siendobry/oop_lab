@@ -1,13 +1,13 @@
 package agh.ics.oop;
 
-public class Animal {
+public class Animal implements IMapElement {
 
     private MapDirection orientation;
     private Vector2d position;
-    private IWorldMap map;
+    private final IWorldMap map;
 
     public Animal() {
-        this(new RectangularMap(4, 4), new Vector2d(2, 2));
+        this(new RectangularMap(4, 4));
     }
 
     public Animal(IWorldMap map) {
@@ -40,12 +40,10 @@ public class Animal {
     public void move(MoveDirection direction) {
         switch (direction) {
             case FORWARD -> {if (this.map.canMoveTo(this.position.add(this.orientation.toUnitVector())))
-                                this.position = (this.map)
-                                                .moveAnimal(this, this.orientation.toUnitVector());
+                                this.position = this.position.add(this.orientation.toUnitVector());
             }
             case BACKWARD -> {if (this.map.canMoveTo(this.position.add(this.orientation.toUnitVector().opposite())))
-                                this.position = (this.map)
-                                                .moveAnimal(this, this.orientation.toUnitVector().opposite());
+                                this.position = this.position.add(this.orientation.toUnitVector().opposite());
             }
             case RIGHT -> this.orientation = this.orientation.next();
             case LEFT -> this.orientation = this.orientation.previous();
