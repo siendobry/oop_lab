@@ -51,34 +51,43 @@ public class World {
 //        runStream(directions);
 //        System.out.println("Stop");
 
-        Animal animal = new Animal();
-        System.out.println(animal);
-
-        // Classic approach
-        // in order for it to work, one has to comment lines 49 through 52
-        MoveDirection[] directionList1 = OptionsParser.parse(args);
-        for (MoveDirection direction: directionList1) {
-            animal.move(direction);
-            System.out.println(animal);
-        }
-
-        // More interactive approach
-        Scanner sc = new Scanner(System.in);
-        String[] instructions = sc.nextLine().split(" ");
-        while (!instructions[0].equals("finish")) {     // in order to break the loop type "finish" into the stdin
-            MoveDirection[] directionList2 = OptionsParser.parse(instructions);
-            for (MoveDirection direction: directionList2) {
-                animal.move(direction);
-            }
-            System.out.println(animal);
-            instructions = sc.nextLine().split(" ");
-        }
+//        Animal animal = new Animal();
+//        System.out.println(animal);
+//
+//        // Classic approach
+//        // in order for it to work, one has to comment lines 49 through 52
+//        MoveDirection[] directionList1 = OptionsParser.parse(args);
+//        for (MoveDirection direction: directionList1) {
+//            animal.move(direction);
+//            System.out.println(animal);
+//        }
+//
+//        // More interactive approach
+//        Scanner sc = new Scanner(System.in);
+//        String[] instructions = sc.nextLine().split(" ");
+//        while (!instructions[0].equals("finish")) {     // in order to break the loop type "finish" into the stdin
+//            MoveDirection[] directionList2 = OptionsParser.parse(instructions);
+//            for (MoveDirection direction: directionList2) {
+//                animal.move(direction);
+//            }
+//            System.out.println(animal);
+//            instructions = sc.nextLine().split(" ");
+//        }
 
         // Forbidding two Animal objects being at the same place,
         // can be done by creating a Map class, which contains
         // boolean information (for each position in the map
         // boundaries), whether there is an Animal object at
         // a particular position.
+
+        MoveDirection[] directions = new OptionsParser().parse(args);
+        IWorldMap map = new RectangularMap(10, 5);
+        Vector2d[] positions = { new Vector2d(2,2), new Vector2d(3,4) };
+        IEngine engine = new SimulationEngine(directions, map, positions);
+        engine.run();
+
+        // idk if everything before lines 83 through 87 can be simply deleted from main??
+        // thanks from mountain for your response:)
     }
 
 }

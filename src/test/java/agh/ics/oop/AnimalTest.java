@@ -15,7 +15,7 @@ public class AnimalTest {
         animal.move(MoveDirection.RIGHT);
         animal.move(MoveDirection.FORWARD);
         assertTrue(animal.isAt(new Vector2d(3, 2)));
-        assertEquals("Position: (3, 2), orientation: Wschód", animal.toString());
+        assertEquals(MapDirection.EAST, animal.getOrientation());
     }
 
     @Test
@@ -27,7 +27,7 @@ public class AnimalTest {
         animal.move(MoveDirection.LEFT);
         animal.move(MoveDirection.FORWARD);
         assertTrue(animal.isAt(new Vector2d(2, 1)));
-        assertEquals("Position: (2, 1), orientation: Południe", animal.toString());
+        assertEquals(MapDirection.SOUTH, animal.getOrientation());
     }
 
 
