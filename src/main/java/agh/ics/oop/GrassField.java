@@ -7,11 +7,10 @@ public class GrassField extends AbstractWorldMap {
     private final ArrayList<Vector2d> garden;
 
     public GrassField(int grassCount) {
-        super();
         this.garden = new ArrayList<>();
-        int MAP_BOUNDARY = (int) Math.sqrt(10 * grassCount);
-        for (int i = 0; i < MAP_BOUNDARY; i++) {
-            for (int j = 0; j < MAP_BOUNDARY; j++) {
+        int mapBoundary = (int) Math.sqrt(10 * grassCount);
+        for (int i = 0; i < mapBoundary; i++) {
+            for (int j = 0; j < mapBoundary; j++) {
                 this.garden.add(new Vector2d(i, j));
             }
         }
@@ -37,23 +36,23 @@ public class GrassField extends AbstractWorldMap {
     private void putGrass(int grassCount) {
         for (int i = 0; i < grassCount; i++) {
             int idx = this.getRdmIdx(garden.size());
-            this.elements.add(new Grass(garden.get(idx)));
+            this.elements.put(garden.get(idx), new Grass(garden.get(idx)));
             garden.remove(idx);
         }
     }
 
     public Vector2d calcLowerLeft() {
-        Vector2d lowerCorner = new Vector2d(0, 0);
-        for (IMapElement element: this.elements) {
-            lowerCorner = lowerCorner.lowerLeft(element.getPosition());
+        Vector2d lowerCorner = new Vector2d((int)Double.POSITIVE_INFINITY, (int)Double.POSITIVE_INFINITY);
+        for (Vector2d element: this.elements.keySet()) {
+            lowerCorner = lowerCorner.lowerLeft(element);
         }
         return lowerCorner;
     }
 
     public Vector2d calcUpperRight() {
-        Vector2d upperCorner = new Vector2d(0, 0);
-        for (IMapElement element: this.elements) {
-            upperCorner = upperCorner.upperRight(element.getPosition());
+        Vector2d upperCorner = new Vector2d((int)Double.NEGATIVE_INFINITY, (int)Double.NEGATIVE_INFINITY);
+        for (Vector2d element: this.elements.keySet()) {
+            upperCorner = upperCorner.upperRight(element);
         }
         return upperCorner;
     }

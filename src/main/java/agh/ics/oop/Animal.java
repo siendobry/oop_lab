@@ -1,13 +1,17 @@
 package agh.ics.oop;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Animal implements IMapElement {
 
     private MapDirection orientation;
     private Vector2d position;
     private final IWorldMap map;
+    private final List<IPositionChangeObserver> observerList = new ArrayList<>();
 
     public Animal() {
-        this(new RectangularMap(4, 4));
+        this(new RectangularMap(5, 5));
     }
 
     public Animal(IWorldMap map) {
@@ -18,6 +22,7 @@ public class Animal implements IMapElement {
         this.orientation = MapDirection.NORTH;
         this.position = initialPosition;
         this.map = map;
+        this.addObserver((IPositionChangeObserver) map);
     }
 
     public MapDirection getOrientation() {
@@ -39,18 +44,38 @@ public class Animal implements IMapElement {
 
     public void move(MoveDirection direction) {
         switch (direction) {
-            case FORWARD -> {if (this.map.canMoveTo(this.position.add(this.orientation.toUnitVector())))
-                                this.position = this.position.add(this.orientation.toUnitVector());
+            case FORWARD -> {
+                Vector2d possibleMovement = this.position.add(this.orientation.toUnitVector());
+                if (this.map.canMoveTo(possibleMovement)) {
+                    this.positionChanged(this.position, possibleMovement);
+                    this.position = possibleMovement;
+                }
             }
-            case BACKWARD -> {if (this.map.canMoveTo(this.position.add(this.orientation.toUnitVector().opposite())))
-                                this.position = this.position.add(this.orientation.toUnitVector().opposite());
+            case BACKWARD -> {
+                Vector2d possibleMovement = this.position.add(this.orientation.toUnitVector().opposite());
+                if (this.map.canMoveTo(possibleMovement)) {
+                    this.positionChanged(this.position, possibleMovement);
+                    this.position = possibleMovement;
+                }
             }
             case RIGHT -> this.orientation = this.orientation.next();
             case LEFT -> this.orientation = this.orientation.previous();
         }
 
-//        this.position = position.upperRight(new Vector2d(0, 0))
-//                .lowerLeft(new Vector2d(4, 4));
+    }
+
+    public void addObserver(IPositionChangeObserver observer) {
+        this.observerList.add(observer);
+    }
+
+    public void removeObserver(IPositionChangeObserver observer) {
+        this.observerList.remove(observer);
+    }
+
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+        for (IPositionChangeObserver observer: this.observerList) {
+            observer.positionChanged(oldPosition, newPosition);
+        }
     }
 
 }
