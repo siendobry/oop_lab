@@ -1,5 +1,7 @@
 package agh.ics.oop;
 
+import java.util.List;
+
 /**
  * The interface responsible for interacting with the map of the world.
  * Assumes that Vector2d and MoveDirection classes are defined.
@@ -46,22 +48,6 @@ public interface IWorldMap {
      */
     Object objectAt(Vector2d position);
 
-
-    // below is a part my implementation - I do not really know if I could do that,
-    // but if I didn't I would have to cast IWorldMap object to RectangularMap in Animal's move method
-    // and in SimulationEngine's run method
-
-    /**
-     * Change animal's position on the map.
-     *
-     * @param animal
-     *            The animal to be moved.
-     * @param direction
-     *            Vector indicating movement.
-     * @return Vector indicating animal's position after movement.
-     */
-     Vector2d moveAnimal(Animal animal, Vector2d direction);
-
     /**
      * Convert the map into a string representation.
      *
@@ -71,5 +57,6 @@ public interface IWorldMap {
      *            Upper-right corner of the desired map fragment.
      * @return String representing the fragment of the map.
      */
-     String toString(Vector2d lowerLeft, Vector2d upperRight);
+    String toString(Vector2d lowerLeft, Vector2d upperRight);
+
 }
