@@ -22,7 +22,6 @@ public class Animal implements IMapElement {
         this.orientation = MapDirection.NORTH;
         this.position = initialPosition;
         this.map = map;
-        this.addObserver((IPositionChangeObserver) map);
     }
 
     public MapDirection getOrientation() {
@@ -72,7 +71,7 @@ public class Animal implements IMapElement {
         this.observerList.remove(observer);
     }
 
-    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+    private void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
         for (IPositionChangeObserver observer: this.observerList) {
             observer.positionChanged(oldPosition, newPosition);
         }

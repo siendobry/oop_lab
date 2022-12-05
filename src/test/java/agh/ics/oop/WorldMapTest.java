@@ -9,14 +9,16 @@ public class WorldMapTest {
     void doesPlaceAnimalsRect() {
         IWorldMap map = new RectangularMap(5, 5);
         assertTrue(map.place(new Animal(map, new Vector2d(4, 4))));
-        assertFalse(map.place(new Animal(map, new Vector2d(4, 4))));
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> map.place(new Animal(map, new Vector2d(4, 4))));
+        assertEquals("Cannot place an element at position (4, 4)", exception.getMessage());
     }
 
     @Test
     void doesPlaceAnimalsGrass() {
         IWorldMap map = new GrassField(5);
         assertTrue(map.place(new Animal(map, new Vector2d(4, 4))));
-        assertFalse(map.place(new Animal(map, new Vector2d(4, 4))));
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> map.place(new Animal(map, new Vector2d(4, 4))));
+        assertEquals("Cannot place an element at position (4, 4)", exception.getMessage());
     }
 
     @Test
