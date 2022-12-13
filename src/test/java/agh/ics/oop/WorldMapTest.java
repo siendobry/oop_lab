@@ -8,7 +8,7 @@ public class WorldMapTest {
     @Test
     void doesPlaceAnimalsRect() {
         IWorldMap map = new RectangularMap(5, 5);
-        assertTrue(map.place(new Animal(map, new Vector2d(4, 4))));
+        map.place(new Animal(map, new Vector2d(4, 4)));
         Exception exception = assertThrows(IllegalArgumentException.class, () -> map.place(new Animal(map, new Vector2d(4, 4))));
         assertEquals("Cannot place an element at position (4, 4)", exception.getMessage());
     }
@@ -16,7 +16,7 @@ public class WorldMapTest {
     @Test
     void doesPlaceAnimalsGrass() {
         IWorldMap map = new GrassField(5);
-        assertTrue(map.place(new Animal(map, new Vector2d(4, 4))));
+        map.place(new Animal(map, new Vector2d(4, 4)));
         Exception exception = assertThrows(IllegalArgumentException.class, () -> map.place(new Animal(map, new Vector2d(4, 4))));
         assertEquals("Cannot place an element at position (4, 4)", exception.getMessage());
     }
