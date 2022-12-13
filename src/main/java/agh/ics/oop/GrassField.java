@@ -27,6 +27,7 @@ public class GrassField extends AbstractWorldMap {
             this.mapBorder.remove(animal.getPosition());
             this.putGrass(1);
         }
+        super.place(animal);
         this.mapBorder.add(animal.getPosition());
         animal.addObserver(this.mapBorder);
     }

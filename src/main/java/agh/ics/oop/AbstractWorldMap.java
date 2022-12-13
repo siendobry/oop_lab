@@ -23,7 +23,9 @@ public abstract class AbstractWorldMap implements IWorldMap {
             this.elements.put(animal.getPosition(), animal);
             animal.addObserver(this);
         }
-        throw new IllegalArgumentException("Cannot place an element at position " + animal.getPosition());
+        else {
+            throw new IllegalArgumentException("Cannot place an element at position " + animal.getPosition());
+        }
     }
 
     public Object objectAt(Vector2d position) {

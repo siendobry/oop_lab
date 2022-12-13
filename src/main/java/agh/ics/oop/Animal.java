@@ -41,26 +41,22 @@ public class Animal implements IMapElement {
         return this.position.equals(position);
     }
 
+    // positionChanged is now also called on orientation change -
+    // - it does not match the method's name, but otherwise, assuming that
+    // the provided commands were only to change the orientation
+    // of the animals, no animation would be triggered
     public void move(MoveDirection direction) {
-        switch (direction) {
-            case FORWARD -> {
-                Vector2d possibleMovement = this.position.add(this.orientation.toUnitVector());
-                if (this.map.canMoveTo(possibleMovement)) {
-                    this.positionChanged(this.position, possibleMovement);
-                    this.position = possibleMovement;
-                }
+        Vector2d oldPosition = this.getPosition();
+        Vector2d possibleMovement = this.position.add(this.orientation.toUnitVector());
+        if (this.map.canMoveTo(possibleMovement)) {
+            switch (direction) {
+                case FORWARD -> this.position = possibleMovement;
+                case BACKWARD -> this.position = possibleMovement.opposite();
+                case RIGHT -> this.orientation = this.orientation.next();
+                case LEFT -> this.orientation = this.orientation.previous();
             }
-            case BACKWARD -> {
-                Vector2d possibleMovement = this.position.add(this.orientation.toUnitVector().opposite());
-                if (this.map.canMoveTo(possibleMovement)) {
-                    this.positionChanged(this.position, possibleMovement);
-                    this.position = possibleMovement;
-                }
-            }
-            case RIGHT -> this.orientation = this.orientation.next();
-            case LEFT -> this.orientation = this.orientation.previous();
+            this.positionChanged(oldPosition, this.getPosition());
         }
-
     }
 
     public void addObserver(IPositionChangeObserver observer) {
@@ -75,6 +71,18 @@ public class Animal implements IMapElement {
         for (IPositionChangeObserver observer: this.observerList) {
             observer.positionChanged(oldPosition, newPosition);
         }
+    }
+
+    @Override
+    public String getImageUrl() {
+        String orientation = null;
+        switch (this.orientation) {
+            case NORTH -> orientation = "src/main/resources/up.png";
+            case SOUTH -> orientation = "src/main/resources/down.png";
+            case EAST -> orientation = "src/main/resources/right.png";
+            case WEST -> orientation = "src/main/resources/left.png";
+        }
+        return orientation;
     }
 
 }

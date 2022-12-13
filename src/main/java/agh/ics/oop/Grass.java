@@ -17,4 +17,8 @@ public class Grass implements IMapElement {
         return "*";
     }
 
+    @Override
+    public String getImageUrl() {
+        return "src/main/resources/grass.png";
+    }
 }
