@@ -19,7 +19,7 @@ public class GrassField extends AbstractWorldMap {
     }
 
     @Override
-    public boolean place(Animal animal) {
+    public void place(Animal animal) {
         Object object = this.objectAt(animal.getPosition());
         if (object instanceof Grass) {
             garden.remove(animal.getPosition());
@@ -27,12 +27,9 @@ public class GrassField extends AbstractWorldMap {
             this.mapBorder.remove(animal.getPosition());
             this.putGrass(1);
         }
-        boolean isAdded = super.place(animal);
-        if (isAdded) {
-            this.mapBorder.add(animal.getPosition());
-            animal.addObserver(this.mapBorder);
-        }
-        return isAdded;
+        super.place(animal);
+        this.mapBorder.add(animal.getPosition());
+        animal.addObserver(this.mapBorder);
     }
 
     private int getRdmIdx(int size) {

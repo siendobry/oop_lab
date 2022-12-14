@@ -6,4 +6,6 @@ public interface IMapElement {
 
     String toString();
 
+    String getImageUrl();
+
 }
