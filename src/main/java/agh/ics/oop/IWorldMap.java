@@ -9,7 +9,7 @@ import java.util.List;
  * @author apohllo
  *
  */
-public interface IWorldMap {
+public interface IWorldMap extends IPositionChangeObserver {
     /**
      * Indicate if any object can move to the given position.
      *
@@ -60,5 +60,9 @@ public interface IWorldMap {
      * @return String representing the fragment of the map.
      */
     String toString(Vector2d lowerLeft, Vector2d upperRight);
+
+    Vector2d calcLowerLeft();
+
+    Vector2d calcUpperRight();
 
 }

@@ -2,12 +2,16 @@ package agh.ics.oop;
 
 import java.util.*;
 
-public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
+public abstract class AbstractWorldMap implements IWorldMap {
 
     protected final HashMap<Vector2d, IMapElement> elements;
 
     public AbstractWorldMap() {
         this.elements = new HashMap<>();
+    }
+
+    public Map<Vector2d, IMapElement> getElements() {
+        return Collections.unmodifiableMap(this.elements);
     }
 
     public boolean canMoveTo(Vector2d position) {
@@ -17,18 +21,15 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
     public boolean place(Animal animal) {
         if (canMoveTo(animal.getPosition())) {
             this.elements.put(animal.getPosition(), animal);
+            animal.addObserver(this);
             return true;
         }
-        return false;
+        throw new IllegalArgumentException("Cannot place an element at position " + animal.getPosition());
     }
 
     public Object objectAt(Vector2d position) {
         return elements.get(position);
     }
-
-    public abstract Vector2d calcLowerLeft();
-
-    public abstract Vector2d calcUpperRight();
 
     public String toString() {
         return toString(calcLowerLeft(), calcUpperRight());
@@ -39,9 +40,8 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
     }
 
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
-        IMapElement tmp = this.elements.get(oldPosition);
-        this.elements.remove(oldPosition);
-        this.elements.put(newPosition, tmp);
+        IMapElement element = this.elements.remove(oldPosition);
+        this.elements.put(newPosition, element);
     }
 
 }

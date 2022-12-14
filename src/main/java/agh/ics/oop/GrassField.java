@@ -5,6 +5,7 @@ import java.util.*;
 public class GrassField extends AbstractWorldMap {
 
     private final ArrayList<Vector2d> garden;
+    private final MapBoundary mapBorder = new MapBoundary();
 
     public GrassField(int grassCount) {
         this.garden = new ArrayList<>();
@@ -23,38 +24,51 @@ public class GrassField extends AbstractWorldMap {
         if (object instanceof Grass) {
             garden.remove(animal.getPosition());
             this.elements.remove(object);
-            putGrass(1);
+            this.mapBorder.remove(animal.getPosition());
+            this.putGrass(1);
         }
-        return super.place(animal);
+        boolean isAdded = super.place(animal);
+        if (isAdded) {
+            this.mapBorder.add(animal.getPosition());
+            animal.addObserver(this.mapBorder);
+        }
+        return isAdded;
     }
 
     private int getRdmIdx(int size) {
         return (int)(Math.random() * size);
     }
 
-    // O(n^2):(
     private void putGrass(int grassCount) {
         for (int i = 0; i < grassCount; i++) {
             int idx = this.getRdmIdx(garden.size());
             this.elements.put(garden.get(idx), new Grass(garden.get(idx)));
+            this.mapBorder.add(garden.get(idx));
             garden.remove(idx);
         }
     }
 
     public Vector2d calcLowerLeft() {
-        Vector2d lowerCorner = new Vector2d((int)Double.POSITIVE_INFINITY, (int)Double.POSITIVE_INFINITY);
-        for (Vector2d element: this.elements.keySet()) {
-            lowerCorner = lowerCorner.lowerLeft(element);
-        }
-        return lowerCorner;
+        return new Vector2d(this.mapBorder.getMinX(), this.mapBorder.getMinY());
     }
 
     public Vector2d calcUpperRight() {
-        Vector2d upperCorner = new Vector2d((int)Double.NEGATIVE_INFINITY, (int)Double.NEGATIVE_INFINITY);
-        for (Vector2d element: this.elements.keySet()) {
-            upperCorner = upperCorner.upperRight(element);
+        return new Vector2d(this.mapBorder.getMaxX(), this.mapBorder.getMaxY());
+    }
+
+
+    // generating new Grass object whenever another instance gets 'eaten'
+
+    // if I am correct, garbage collector should get rid of old Grass object's instance
+    // as the only reference to it was in the HashMap, and it got removed
+    @Override
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+        Object beforeMovement = this.objectAt(newPosition);
+        super.positionChanged(oldPosition, newPosition);
+        if (beforeMovement instanceof Grass) {
+            this.garden.add(oldPosition);
+            this.putGrass(1);
         }
-        return upperCorner;
     }
 
 }

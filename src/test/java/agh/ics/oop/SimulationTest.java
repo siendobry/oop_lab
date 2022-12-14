@@ -3,7 +3,11 @@ package agh.ics.oop;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+
+import javax.swing.text.html.Option;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SimulationTest {
 
@@ -76,6 +80,13 @@ public class SimulationTest {
         List<Animal> animals = engine.getAnimals();
             assertEquals(animal.getPosition(), animals.get(0).getPosition());
             assertEquals(animal.getOrientation(), animals.get(0).getOrientation());
+    }
+
+    @Test
+    void movementTest4() {
+        String[] args = new String[]{"f", "r", "f", "f", "r", "g", "g", "r", "f", "f", "r", "f", "r", "f", "l"};
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> OptionsParser.parse(args));
+        assertEquals("g is not a valid move direction", exception.getMessage());
     }
 
 }

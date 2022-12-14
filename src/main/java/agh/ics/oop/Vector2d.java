@@ -4,8 +4,16 @@ import java.util.Objects;
 
 public class Vector2d {
 
-    final int x;
-    final int y;
+    private final int x;
+    private final int y;
+
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
+    }
 
     public Vector2d(int x, int y) {
         this.x = x;
